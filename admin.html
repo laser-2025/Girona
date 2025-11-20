@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم</title>
+    <style>
+        body{background:#111;color:#fff;font-family:Arial;padding:30px;text-align:center;}
+        h1{color:#d4af37;margin:30px;}
+        input,textarea,button{padding:15px;margin:12px;width:90%;max-width:500px;border-radius:12px;font-size:1.1rem;}
+        input,textarea{background:#333;border:none;color:#fff;}
+        button{background:#d4af37;color:#000;border:none;font-weight:bold;cursor:pointer;}
+        button:hover{background:#fff;}
+        .list{margin-top:50px;}
+        .it{margin:20px;padding:15px;background:#222;border-radius:12px;position:relative;}
+        .del{position:absolute;top:10px;left:10px;background:#e74c3c;color:#fff;padding:8px 15px;border-radius:50%;cursor:pointer;}
+    </style>
+</head>
+<body>
+<h1>لوحة التحكم</h1>
+<input type="password" id="p" placeholder="الكود السري (1234)">
+<button onclick="login()">دخول</button>
+
+<div id="panel" style="display:none;">
+    <h2>إضافة صورة</h2>
+    <input type="file" id="img" accept="image/*">
+    <textarea id="c1" placeholder="تعليق الصورة"></textarea>
+    <button onclick="addImg()">إضافة</button>
+
+    <h2>إضافة فيديو</h2>
+    <input type="text" id="vid" placeholder="رابط يوتيوب">
+    <textarea id="c2" placeholder="تعليق الفيديو"></textarea>
+    <button onclick="addVid()">إضافة</button>
+
+    <h2 style="margin-top:50px;color:#d4af37;">الأعمال الحالية</h2>
+    <div class="list" id="list"></div>
+
+    <p style="margin-top:40px;"><a href="index.html" style="color:#25D366;font-size:1.3rem;">العودة للموقع</a></p>
+</div>
+
+<script>
+function login(){
+    if(document.getElementById('p').value==="1234"){
+        document.getElementById('panel').style.display="block";
+        showAll();
+    }else alert("الكود غلط");
+}
+
+function showAll(){
+    const d = JSON.parse(localStorage.getItem('myWorks')||'{"img":[],"vid":[]}');
+    const L = document.getElementById('list'); L.innerHTML='';
+
+    d.img.reverse().forEach((x,i)=>{const ri=d.img.length-1-i;
+        L.innerHTML+=`<div class="it"><span class="del" onclick="delImg(${ri})">×</span>
+        <img src="${x.url}" style="width:100%;max-height:250px;border-radius:10px;"><p style="background:#d4af37;color:#000;padding:8px;margin-top:8px;border-radius:8px;">${x.cap||'بدون تعليق'}</p></div>`;
+    });
+    d.vid.reverse().forEach((x,i)=>{const ri=d.vid.length-1-i;
+        L.innerHTML+=`<div class="it"><span class="del" onclick="delVid(${ri})">×</span>
+        <iframe src="${x.url.replace('watch?v=','embed/')}" style="width:100%;height:200px;"></iframe>
+        <p style="background:#d4af37;color:#000;padding:8px;margin-top:8px;border-radius:8px;">${x.cap||'بدون تعليق'}</p></div>`;
+    });
+}
+
+function addImg(){
+    const f=document.getElementById('img').files[0];
+    if(!f)return alert("اختاري صورة");
+    const r=new FileReader();
+    r.onload=e=>{
+        const d=JSON.parse(localStorage.getItem('myWorks')||'{"img":[],"vid":[]}');
+        d.img.push({url:e.target.result,cap:document.getElementById('c1').value});
+        localStorage.setItem('myWorks',JSON.stringify(d));
+        alert("تمت الإضافة!"); document.getElementById('img').value=''; document.getElementById('c1').value=''; showAll();
+    }
+    r.readAsDataURL(f);
+}
+
+function addVid(){
+    const l=document.getElementById('vid').value.trim();
+    if(!l.includes('youtu'))return alert("رابط يوتيوب");
+    const d=JSON.parse(localStorage.getItem('myWorks')||'{"img":[],"vid":[]}');
+    d.vid.push({url:l,cap:document.getElementById('c2').value});
+    localStorage.setItem('myWorks',JSON.stringify(d));
+    alert("تمت الإضافة!"); document.getElementById('vid').value=''; document.getElementById('c2').value=''; showAll();
+}
+
+function delImg(i){if(confirm("تمسحيها؟")){const d=JSON.parse(localStorage.getItem('myWorks')||'{"img":[],"vid":[]}');d.img.splice(i,1);localStorage.setItem('myWorks',JSON.stringify(d));showAll();}}
+function delVid(i){if(confirm("تمسحيها؟")){const d=JSON.parse(localStorage.getItem('myWorks')||'{"img":[],"vid":[]}');d.vid.splice(i,1);localStorage.setItem('myWorks',JSON.stringify(d));showAll();}}
+</script>
+</body>
+</html>
