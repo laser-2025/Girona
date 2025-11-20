@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دكور ليزر وحلويات</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{background:#000;color:#fff;font-family:Arial;min-height:100vh;background:linear-gradient(135deg,#111,#000);}
+        .top{position:fixed;top:10px;width:100%;display:flex;justify-content:space-between;padding:0 15px;z-index:999;}
+        .lang{background:#d4af37;color:#000;padding:8px 16px;border-radius:50px;font-size:0.9rem;cursor:pointer;}
+        .wa{background:#25D366;width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;}
+        header{text-align:center;padding:90px 20px 60px;background:linear-gradient(rgba(0,0,0,0.8),rgba(0,0,0,0.8)),url('https://images.unsplash.com/photo-1518770660439-24edd4c565f7');background-size:cover;}
+        h1{font-size:2.4rem;color:#d4af37;margin:15px 0;}
+        p{font-size:1.2rem;margin:15px auto;max-width:90%;}
+        .section{padding:40px 15px;}
+        .section h2{font-size:2rem;color:#d4af37;text-align:center;margin-bottom:30px;}
+        .photos{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:15px;}
+        .videos{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:25px;}
+        .item{position:relative;border-radius:15px;overflow:hidden;box-shadow:0 8px 25px rgba(212,175,55,0.3);}
+        .item img{width:100%;height:220px;object-fit:cover;cursor:pointer;}
+        .item iframe{width:100%;height:220px;border:none;}
+        .cap{background:rgba(212,175,55,0.95);color:#000;padding:10px;font-size:0.9rem;text-align:center;font-weight:bold;}
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<div class="top">
+    <div class="lang" onclick="toggleLang()">عربي / Español</div>
+    <a href="https://wa.me/212600000000" target="_blank" class="wa"><i class="fab fa-whatsapp"></i></a>
+</div>
+
+<header>
+    <h1 ar>مرحبا في عالم الدكور بالليزر والحلويات</h1>
+    <h1 es style="display:none;">¡Bienvenidos al mundo del láser y dulces!</h1>
+    <p ar>كل يوم تصاميم جديدة للحفلات والمناسبات</p>
+    <p es style="display:none;">Nuevos diseños cada día para eventos y celebraciones</p>
+</header>
+
+<div class="section">
+    <h2 ar>الصور</h2><h2 es style="display:none;">Fotos</h2>
+    <div class="photos" id="photos"></div>
+</div>
+
+<div class="section">
+    <h2 ar>الفيديوهات</h2><h2 es style="display:none;">Videos</h2>
+    <div class="videos" id="videos"></div>
+</div>
+
+<script>
+function load(){
+    const data = JSON.parse(localStorage.getItem('myWorks')||'{"img":[],"vid":[]}');
+    
+    const p = document.getElementById('photos'); p.innerHTML='';
+    data.img.reverse().forEach(x=>{
+        p.innerHTML += `<div class="item"><img src="${x.url}" onclick="this.requestFullscreen()"><div class="cap">${x.cap||''}</div></div>`;
+    });
+
+    const v = document.getElementById('videos'); v.innerHTML='';
+    data.vid.reverse().forEach(x=>{
+        const embed = x.url.includes('youtu.be') ? 'https://www.youtube.com/embed/'+x.url.split('/').pop() : x.url.replace('watch?v=','embed/');
+        v.innerHTML += `<div class="item"><iframe src="${embed}" allowfullscreen></iframe><div class="cap">${x.cap||''}</div></div>`;
+    });
+}
+
+function toggleLang(){
+    const isAr = document.documentElement.lang==="ar";
+    document.documentElement.lang = isAr ? "es" : "ar";
+    document.documentElement.dir = isAr ? "ltr" : "rtl";
+    document.querySelectorAll('[ar],[es]').forEach(el=>{
+        el.style.display = el.hasAttribute(isAr ? 'es' : 'ar') ? 'block' : 'none';
+    });
+}
+
+load();
+</script>
+</body>
+</html>
