@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تعديل الصور والفيديو | Retoque de Fotos y Vídeos</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- زر تبديل اللغة -->
+    <div class="lang-switch">
+        <button onclick="changeLang('ar')" class="lang-btn">العربية</button>
+        <button onclick="changeLang('es')" class="lang-btn">Español</button>
+    </div>
+
+    <header>
+        <div class="container">
+            <img src="images/logo.png" alt="Logo" class="logo">
+            <h1 data-ar="خدمات تعديل الصور والفيديو باحترافية" data-es="Servicios Profesionales de Retoque de Fotos y Vídeos"></h1>
+            <p data-ar="نعدل صورك وفيديوهاتك بأجمل شكل وبأسعار مناسبة" 
+               data-es="Retocamos tus fotos y vídeos con la mejor calidad y precios accesibles"></p>
+        </div>
+    </header>
+
+    <section class="services">
+        <div class="container">
+            <h2 data-ar="أعمالنا" data-es="Nuestros Trabajos"></h2>
+            <div class="grid">
+
+                <!-- منتج 1 -->
+                <div class="card">
+                    <div class="before-after">
+                        <img src="images/before1.jpg" alt="قبل" class="before">
+                        <img src="images/after1.jpg" alt="بعد" class="after">
+                    </div>
+                    <video controls>
+                        <source src="videos/video1.mp4" type="video/mp4">
+                    </video>
+                    <div class="info">
+                        <h3 data-ar="تعديل بشرة + إزالة خلفية + إضاءة" 
+                            data-es="Retoque de piel + eliminación de fondo + iluminación"></h3>
+                        <p class="how" data-ar="تم تعديل البشرة بالكامل باستعمال Frequency Separation في فوتوشوب، إزالة الخلفية وإضافة خلفية استوديو نظيفة، تعديل الألوان والإضاءة."
+                           data-es="Se retocó toda la piel con Frequency Separation en Photoshop, se eliminó el fondo y se añadió un fondo de estudio limpio, corrección de color e iluminación."></p>
+                        <div class="price" data-ar="الثمن: 150 درهم" data-es="Precio: 15 €"></div>
+                        <a href="https://wa.me/212600000000?text=مرحبا%20أريد%20تعديل%20مثل%20الصورة%20رقم%201" 
+                           target="_blank" class="whatsapp-btn">
+                            <i class="fab fa-whatsapp"></i>
+                            <span data-ar="اطلبي الآن عبر الواتساب" data-es="Pide ahora por WhatsApp"></span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- منتج 2 (يمكنك تكرار الكارد كما تشائين) -->
+                <div class="card">
+                    <div class="before-after">
+                        <img src="images/before2.jpg" alt="قبل" class="before">
+                        <img src="images/after2.jpg" alt="بعد" class="after">
+                    </div>
+                    <video controls>
+                        <source src="videos/video2.mp4" type="video/mp4">
+                    </video>
+                    <div class="info">
+                        <h3 data-ar="تجميل الوجه + تبييض الأسنان + تصحيح الشكل" 
+                            data-es="Embellecimiento facial + blanqueamiento dental + corrección de forma"></h3>
+                        <p class="how" data-ar="تم تجميل الوجه باستخدام Dodge & Burn، تبييض الأسنان، تصحيح شكل الوجه قليلاً باستعمال Liquify."
+                           data-es="Se embelleció el rostro con Dodge & Burn, blanqueamiento de dientes, ligera corrección de forma con Liquify."></p>
+                        <div class="price" data-ar="الثمن: 200 درهم" data-es="Precio: 20 €"></div>
+                        <a href="https://wa.me/212600000000?text=مرحبا%20أريد%20هذا%20التعديل%20بالضبط" 
+                           target="_blank" class="whatsapp-btn">
+                            <i class="fab fa-whatsapp"></i>
+                            <span data-ar="اطلبي الآن عبر الواتساب" data-es="Pide ahora por WhatsApp"></span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- أضيفي كروت أخرى هنا بنفس الطريقة -->
+
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p data-ar="جميع الحقوق محفوظة © 2025" data-es="Todos los derechos reservados © 2025"></p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
