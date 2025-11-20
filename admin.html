@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>إدارة ليزر ملكي</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+  <h1>إدارة سرية</h1>
+  <input type="password" id="pass" placeholder="كلمة السر" style="padding:15px;font-size:18px;width:100%;margin:20px 0;border-radius:12px;border:2px solid #00ffff;background:#0008;color:#fff;">
+  <div id="panel" style="display:none;">
+    <input type="file" id="file" accept="image/*,video/*" multiple style="margin:20px 0;">
+    <input type="text" id="price" placeholder="الثمن (مثال: 450 درهم)" style="padding:15px;font-size:18px;width:100%;margin:15px 0;border-radius:12px;border:2px solid #00ffff;background:#0008;color:#fff;">
+    <button onclick="add()" style="padding:18px;font-size:22px;width:100%;background:#00ffff;color:#000;border:none;border-radius:12px;font-weight:bold;">إضافة الشغل</button>
+  </div>
+</div>
+<script>
+document.getElementById('pass').addEventListener('keypress', e => {
+  if (e.key==='Enter' && e.target.value==='melki2025') {
+    document.getElementById('panel').style.display = 'block';
+    e.target.disabled = true;
+  }
+});
+function add() {
+  const files = document.getElementById('file').files;
+  const price = document.getElementById('price').value;
+  if (!files.length || !price) return alert('ارفع ملف واكتب الثمن!');
+  [...files].forEach(f => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      let works = JSON.parse(localStorage.getItem('laserWorks')) || [];
+      works.unshift({
+        url: e.target.result,
+        price: price,
+        date: new Date().toLocaleDateString('ar-MA'),
+        type: f.type.startsWith('video') ? 'video' : 'image'
+      });
+      localStorage.setItem('laserWorks', JSON.stringify(works));
+    };
+    reader.readAsDataURL(f);
+  });
+  alert('تمت الإضافة بنجاح!');
+}
+</script>
+</body>
+</html>
