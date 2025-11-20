@@ -55,7 +55,35 @@
 
 <script>
 function load(){
-    const data = JSON.parse(localStorage.getItem('myWorks')||'{"img":[],"vid":[]}');
+    <script>
+// الرابط الخاص بيك 100% (جاهز ومفعل)
+const DATA_URL = "https://raw.githubusercontent.com/laser-2025/mygallery/main/data.json";
+
+async function load(){
+    try{
+        const res = await fetch(DATA_URL + "?" + Date.now());
+        const data = await res.json();
+        
+        const p = document.getElementById('photos'); p.innerHTML = '';
+        data.img.reverse().forEach(x => {
+            p.innerHTML += `<div class="item"><img src="${x.url}" onclick="this.requestFullscreen()"><div class="cap">${x.cap||''}</div></div>`;
+        });
+
+        const v = document.getElementById('videos'); v.innerHTML = '';
+        data.vid.reverse().forEach(x => {
+            const embed = x.url.includes('youtu.be') 
+                ? 'https://www.youtube.com/embed/'+x.url.split('/').pop() 
+                : x.url.replace('watch?v=','embed/');
+            v.innerHTML += `<div class="item"><iframe src="${embed}" allowfullscreen></iframe><div class="cap">${x.cap||''}</div></div>`;
+        });
+    }catch(e){
+        document.getElementById('photos').innerHTML = 'تحقق من الاتصال بالإنترنت';
+    }
+}
+
+load();
+setInterval(load, 15000); // يحدث كل 15 ثانية تلقائيًا
+</script>
     const p = document.getElementById('photos'); p.innerHTML='';
     data.img.reverse().forEach(x=>{
         p.innerHTML += `<div class="item"><img src="${x.url}" onclick="this.requestFullscreen()"><div class="cap">${x.cap||''}</div></div>`;
