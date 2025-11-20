@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>دكور ليزر وحلويات</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+        body{background:#000;color:#fff;font-family:Arial;min-height:100vh;background:linear-gradient(135deg,#111,#000);}
+        .top{position:fixed;top:0;left:0;right:0;height:60px;display:flex;justify-content:space-between;align-items:center;padding:0 20px;z-index:999;background:rgba(0,0,0,0.8);backdrop-filter:blur(10px);}
+        .lang{background:#d4af37;color:#000;padding:10px 20px;border-radius:50px;font-weight:bold;font-size:1rem;cursor:pointer;user-select:none;}
+        .wa{background:#25D366;width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:30px;box-shadow:0 4px 15px rgba(0,0,0,0.6);}
+        header{text-align:center;padding:90px 20px 60px;background:linear-gradient(rgba(0,0,0,0.8),rgba(0,0,0,0.8)),url('https://images.unsplash.com/photo-1518770660439-24edd4c565f7');background-size:cover;background-position:center;}
+        h1{font-size:2.4rem;color:#d4af37;margin:15px 0;}
+        p{font-size:1.2rem;max-width:90%;margin:15px auto;}
+        .section{padding:40px 15px;}
+        .section h2{font-size:2rem;color:#d4af37;text-align:center;margin-bottom:30px;}
+        .photos,.videos{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:15px;}
+        .videos{grid-template-columns:repeat(auto-fill,minmax(300px,1fr));}
+        .item{position:relative;border-radius:15px;overflow:hidden;box-shadow:0 8px 25px rgba(212,175,55,0.3);}
+        .item img{width:100%;height:220px;object-fit:cover;}
+        .item iframe{width:100%;height:220px;border:none;}
+        .cap{background:rgba(212,175,55,0.95);color:#000;padding:12px;font-weight:bold;text-align:center;}
+        .del{position:absolute;top:8px;left:8px;background:#e74c3c;color:#fff;width:38px;height:38px;border-radius:50%;display:none;align-items:center;justify-content:center;font-size:22px;}
+        #adminpanel{background:#111;border:3px solid #d4af37;padding:25px;border-radius:20px;margin:40px 15px;display:none;}
+        #adminpanel input,#adminpanel textarea,#adminpanel button{width:100%;padding:14px;margin:12px 0;border-radius:12px;}
+        #adminpanel input,#adminpanel textarea{background:#333;color:#fff;border:none;}
+        #adminpanel button{background:#d4af37;color:#000;font-weight:bold;}
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<div class="top">
+    <!-- الزر هذا يخدم بالضغط العادي = تغيير اللغة | بالضغط المطول = فتح الأدمن -->
+    <div class="lang" id="langBtn">عربي / Español</div>
+    <a href="https://wa.me/34644170829" class="wa"><i class="fab fa-whatsapp"></i></a>
+</div>
+
+<header>
+    <h1 class="txt ar">مرحبا في عالم الدكور بالليزر والحلويات</h1>
+    <h1 class="txt es" style="display:none;">¡Bienvenidos al mundo del láser y dulces!</h1>
+    <p class="txt ar">كل يوم تصاميم جديدة للحفلات والمناسبات</p>
+    <p class="txt es" style="display:none;">Nuevos diseños cada día para eventos y celebraciones</p>
+</header>
+
+<div class="section">
+    <h2 class="txt ar">الصور</h2><h2 class="txt es" style="display:none;">Fotos</h2>
+    <div class="photos" id="photos"></div>
+</div>
+
+<div class="section">
+    <h2 class="txt ar">الفيديوهات</h2><h2 class="txt es" style="display:none;">Videos</h2>
+    <div class="videos" id="videos"></div>
+</div>
+
+<div id="adminpanel">
+    <h3 style="color:#d4af37;text-align:center;">إضافة صورة</h3>
+    <input type="file" id="newimg" accept="image/*">
+    <textarea id="capimg" placeholder="تعليق (اختياري)"></textarea>
+    <button onclick="addImg()">إضافة الصورة</button>
+
+    <h3 style="color:#d4af37;text-align:center;margin-top:30px;">إضافة فيديو</h3>
+    <input type="text" id="newvid" placeholder="رابط يوتيوب">
+    <textarea id="capvid" placeholder="تعليق (اختياري)"></textarea>
+    <button onclick="addVid()">إضافة الفيديو</button>
+</div>
+
+<script>
+// تغيير اللغة + فتح الأدمن
+const langBtn = document.getElementById('langBtn');
+let pressTimer;
+
+langBtn.addEventListener('click', toggleLang);                      // ضغط عادي → تغيير اللغة
+langBtn.addEventListener('touchstart', e => { e.preventDefault(); pressTimer = setTimeout(openAdmin, 1000); });
+langBtn.addEventListener('mousedown', e => { e.preventDefault(); pressTimer = setTimeout(openAdmin, 1000); });
+langBtn.addEventListener('touchend', () => clearTimeout(pressTimer));
+langBtn.addEventListener('mouseup', () => clearTimeout(pressTimer));
+langBtn.addEventListener('mouseleave', () => clearTimeout(pressTimer));
+
+function toggleLang(){
+    const isAr = document.documentElement.lang === "ar";
+    document.documentElement.lang = isAr ? "es" : "ar";
+    document.documentElement.dir = isAr ? "ltr" : "rtl";
+    document.querySelectorAll('.txt').forEach(el => {
+        el.style.display = (isAr && el.classList.contains('es')) || (!isAr && el.classList.contains('ar')) ? 'block' : 'none';
+    });
+    langBtn.textContent = isAr ? "Español / عربي" : "عربي / Español";
+}
+
+function openAdmin(){
+    if(prompt("الكود السري:") === "1234"){
+        document.getElementById('adminpanel').style.display = "block";
+        document.querySelectorAll('.del').forEach(d => d.style.display = "flex");
+        alert("تم فتح لوحة التحكم ♥");
+    }
+}
+
+// باقي الكود (localStorage) كما هو ويخدم 100%
+function load(){/* نفس الكود السابق */ const data = JSON.parse(localStorage.getItem('laserWorks')||'{"img":[],"vid":[]}'); const p=document.getElementById('photos');p.innerHTML='';data.img.reverse().forEach((x,i)=>{let ri=data.img.length-1-i;p.innerHTML+=`<div class="item"><img src="${x.url}" onclick="this.requestFullscreen()"><div class="cap">${x.cap||''}</div><div class="del" onclick="delImg(${ri})">×</div></div>`;}); const v=document.getElementById('videos');v.innerHTML='';data.vid.reverse().forEach((x,i)=>{let ri=data.vid.length-1-i;const embed=x.url.includes('youtu.be')?'https://www.youtube.com/embed/'+x.url.split('/').pop():x.url.replace('watch?v=','embed/');v.innerHTML+=`<div class="item"><iframe src="${embed}" allowfullscreen></iframe><div class="cap">${x.cap||''}</div><div class="del" onclick="delVid(${ri})">×</div></div>`;});}
+function save(d){localStorage.setItem('laserWorks',JSON.stringify(d));load();alert("تم ♥");}
+function addImg(){const f=document.getElementById('newimg').files[0];if(!f)return alert("اختاري صورة");const r=new FileReader();r.onload=e=>{const d=JSON.parse(localStorage.getItem('laserWorks')||'{"img":[],"vid":[]}');d.img.push({url:e.target.result,cap:document.getElementById('capimg').value});save(d);document.getElementById('capimg').value='';document.getElementById('newimg').value='';};r.readAsDataURL(f);}
+function addVid(){const l=document.getElementById('newvid').value.trim();if(!l.includes('youtu'))return alert("رابط يوتيوب فقط");const d=JSON.parse(localStorage.getItem('laserWorks')||'{"img":[],"vid":[]}');d.vid.push({url:l,cap:document.getElementById('capvid').value});save(d);document.getElementById('newvid').value='';document.getElementById('capvid').value='';}
+function delImg(i){if(confirm("تمسحيها؟")){const d=JSON.parse(localStorage.getItem('laserWorks')||'{"img":[],"vid":[]}');d.img.splice(i,1);save(d);}}
+function delVid(i){if(confirm("تمسحيها؟")){const d=JSON.parse(localStorage.getItem('laserWorks')||'{"img":[],"vid":[]}');d.vid.splice(i,1);save(d);}}
+
+load();
+</script>
+</body>
+</html>
