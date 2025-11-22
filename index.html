@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Láser Palafrugell</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
+body{background:#000;color:#fff;}
+.topbar{background:#00ff41;padding:15px;text-align:center;position:fixed;width:100%;top:0;z-index:99;color:#000;font-weight:bold;font-size:18px;}
+.logo{position:absolute;left:15px;top:15px;}
+.back{position:absolute;left:15px;top:10px;font-size:35px;cursor:pointer;}
+.secret{position:fixed;top:70px;right:10px;width:46px;height:46px;background:#ffcc00;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 0 20px #ff0;z-index:999;opacity:0.8;cursor:pointer;}
+.secret:hover{opacity:1;transform:scale(1.4) rotate(30deg);}
+h1{font-size:45px;color:#ffcc00;text-align:center;margin:100px 20px 20px;line-height:1.2;}
+p{font-size:22px;text-align:center;margin:0 20px 60px;opacity:0.9;}
+.buttons{display:flex;justify-content:center;gap:40px;flex-wrap:wrap;padding:20px;}
+.btn{background:#111;border:4px solid #ffcc00;border-radius:20px;width:160px;height:160px;display:flex;flex-direction:column;justify-content:center;align-items:center;color:#ffcc00;font-size:24px;font-weight:bold;box-shadow:0 0 30px rgba(255,204,0,0.6);cursor:pointer;}
+.btn img{width:70px;margin-bottom:10px;}
+.gallery{padding:80px 15px 20px;display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:15px;}
+.gallery img{width:100%;border-radius:12px;border:4px solid #ffcc00;box-shadow:0 0 20px rgba(255,204,0,0.7);cursor:zoom-in;}
+.wa{position:fixed;bottom:25px;right:20px;width:60px;height:60px;background:#25d366;color:#fff;border-radius:50%;font-size:35px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 20px #000;z-index:999;cursor:pointer;}
+</style>
+</head>
+<body>
+
+<div class="topbar"><div class="logo">Laser palafrugell | Chat</div></div>
+<div class="secret" onclick="document.getElementById('admin').style.display='block'">Key</div>
+
+<div id="home">
+  <h1>¡Bienvenidos al mundo del láser y dulces!</h1>
+  <p>Nuevos diseños cada día para eventos y celebraciones</p>
+  <div class="buttons">
+    <div class="btn" onclick="show('fotos')"><img src="https://img.icons8.com/color/96/image-gallery.png"><span>Fotos</span></div>
+    <div class="btn" onclick="show('videos')"><img src="https://img.icons8.com/color/96/video.png"><span>Videos</span></div>
+  </div>
+</div>
+
+<div id="fotos" style="display:none;">
+  <div class="topbar"><span class="back" onclick="show('home')">Back</span> Nuestras Fotos</div>
+  <div class="gallery" id="photoGallery">لا توجد صور بعد...</div>
+</div>
+
+<div id="videos" style="display:none;">
+  <div class="topbar"><span class="back" onclick="show('home')">Back</span> Nuestros Videos</div>
+  <div class="gallery" id="videoGallery">لا توجد فيديوهات بعد...</div>
+</div>
+
+<div id="admin" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#000;z-index:9999;padding:20px;overflow:auto;">
+  <h2 style="color:#ffcc00;text-align:center;">رفع صورة أو فيديو</h2>
+  <input type="file" id="fileInput" accept="image/*,video/*" multiple style="background:#333;color:#ffcc00;padding:20px;width:100%;border-radius:15px;margin:20px 0;">
+  <button onclick="upload()" style="background:#25d366;color:#fff;padding:15px;width:100%;border:none;border-radius:15px;font-size:18px;">رفع وإظهار فورًا</button>
+  <button onclick="document.getElementById('admin').style.display='none'" style="background:#e91e63;color:#fff;margin-top:10px;padding:15px;width:100%;border:none;border-radius:15px;">إغلاق</button>
+  <div id="preview" style="margin-top:20px;"></div>
+</div>
+
+<a href="https://wa.me/212601234567" class="wa">Chat</a>
+
+<script>
+function show(id){document.querySelectorAll('#home,#fotos,#videos').forEach(e=>e.style.display='none');document.getElementById(id).style.display='block';}
+function upload(){
+  const files = document.getElementById('fileInput').files;
+  for(let file of files){
+    const reader = new FileReader();
+    reader.onload = function(e){
+      const url = e.target.result;
+      if(file.type.includes('image')){
+        document.getElementById('photoGallery').innerHTML += `<img src="${url}" onclick="this.style.transform='scale(2.5)';this.style.zIndex='9999';setTimeout(()=>this.style='',3000)">`;
+      }else{
+        document.getElementById('videoGallery').innerHTML += `<video controls style="width:100%;border-radius:12px;border:4px solid #ffcc00;"><source src="${url}"></video>`;
+      }
+      document.getElementById('preview').innerHTML += `<img src="${url}" style="width:100%;margin:10px 0;border-radius:10px;">`;
+    }
+    reader.readAsDataURL(file);
+  }
+}
+</script>
+</body>
+</html>
